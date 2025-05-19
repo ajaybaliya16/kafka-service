@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.test_core.thingsboard.common.KantarLicense;
 import com.test_core.thingsboard.common.SimData;
 import com.test_core.thingsboard.dao.JpaAssetInstallationDao;
 import com.test_core.thingsboard.dao.MeterDao;
@@ -40,8 +41,8 @@ public class DefaultTbMeterServiceImp implements TbMeterService {
 	@Autowired
     TbSimDataService tbSimDataService;
 	
-//	@Autowired
-//	KantarLicensingService licensingService;
+	@Autowired
+	KantarLicensingService licensingService;
 	
 	 @Override
 	    public void signupdevice(String deviceID, Double lat, Double lng, String meterId, String
@@ -92,13 +93,13 @@ public class DefaultTbMeterServiceImp implements TbMeterService {
 	        if (meter != null) {
 	            if (meter.getLicenseKey() == null) {
 	            	// THIRD PARTY API TO GET LICENSE 
-//	                KantarLicense kantarLicense = licensingService.createLicense(38L, deviceID);
-//	                if (kantarLicense != null) {
-	                    meter.setLicenseNo("1234567");
-	                    meter.setLicenseKey("111111");
-	                    meterDao.saveMeter(meter);
-	                    licenseKey = "11111111";
-//	                }
+	                KantarLicense kantarLicense = licensingService.createLicense(38L, deviceID);
+	                if (kantarLicense != null) {
+	                	  meter.setLicenseNo(kantarLicense.getCivolutionSerialNumber());
+	                      meter.setLicenseKey(kantarLicense.getCivolutionLicense());
+	                      meterDao.saveMeter(meter);
+	                      licenseKey = kantarLicense.getCivolutionLicense();
+	                }
 	            } else
 	                licenseKey = meter.getLicenseKey();
 	        }
