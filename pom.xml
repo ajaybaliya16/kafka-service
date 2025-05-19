@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.test-core</groupId>
-	<artifactId>test-core</artifactId>
+	<artifactId>kafka-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>test-core</name>
-	<description>test-core</description>
+	<name>kafka-service</name>
+	<description>kafka-service</description>
 	<url />
 	<licenses>
 		<license />
