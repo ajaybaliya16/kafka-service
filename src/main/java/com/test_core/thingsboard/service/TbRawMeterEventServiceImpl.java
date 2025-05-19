@@ -33,10 +33,10 @@ public class TbRawMeterEventServiceImpl implements TbRawMeterEventService {
         List<Map<String, Long>> channelLogList = new ArrayList<>();
 
         // Previously used decompression, but now we assume the data is plain JSON bytes.
-        // List<channelLog> channelLogsData = decompressGzip(channelLogs);
+         List<channelLog> channelLogsData = decompressGzip(channelLogs);
 
         // Directly deserialize the JSON from the byte array, assuming plain JSON data.
-        List<channelLog> channelLogsData = new ObjectMapper().readValue(channelLogs, new TypeReference<List<channelLog>>() {});
+        //List<channelLog> channelLogsData = new ObjectMapper().readValue(channelLogs, new TypeReference<List<channelLog>>() {});
 
         for (channelLog channelLog : channelLogsData) {
             String eventType = switch (channelLog.getEventType()) {
@@ -65,7 +65,7 @@ public class TbRawMeterEventServiceImpl implements TbRawMeterEventService {
 
         return channelLogList;
     }
-
+ 
 
     private List<channelLog> decompressGzip(byte[] channelLogs) {
         try (GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(channelLogs))) {

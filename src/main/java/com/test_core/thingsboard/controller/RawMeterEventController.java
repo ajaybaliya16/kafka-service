@@ -24,7 +24,7 @@ public class RawMeterEventController {
 
     private final TbRawMeterEventService tbRawMeterEventService;
 
-    @PostMapping( value = "/savelistofchannellogs/compress", consumes = "application/octet-stream")
+    @PostMapping( value = "/savelistofchannellogs/compress", consumes = {"application/octet-stream", "application/gzip"})
     	public ResponseEntity<?> saveListOfChannelLogs(
     	    @RequestBody(required = false) byte[] compressedChannelLogs,
     	    @RequestParam("meterId") Long meterId,
