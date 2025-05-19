@@ -29,41 +29,46 @@ public class TbRawMeterEventServiceImpl implements TbRawMeterEventService {
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public List<Map<String, Long>> saveListOfChannelLogs(Long meterId, String batteryPercentage, String networkPercentage, byte[] channelLogs) throws IOException {
-        List<Map<String, Long>> channelLogList = new ArrayList<>();
+    public List<Map<String, Long>> saveListOfChannelLogs(Long meterId, String batteryPercentage, String networkPercentage, byte[] channelLogs) {
+    	try {
+    		 List<Map<String, Long>> channelLogList = new ArrayList<>();
 
-        // Previously used decompression, but now we assume the data is plain JSON bytes.
-         List<channelLog> channelLogsData = decompressGzip(channelLogs);
+    	        // Previously used decompression, but now we assume the data is plain JSON bytes.
+    	         List<channelLog> channelLogsData = decompressGzip(channelLogs);
 
-        // Directly deserialize the JSON from the byte array, assuming plain JSON data.
-        //List<channelLog> channelLogsData = new ObjectMapper().readValue(channelLogs, new TypeReference<List<channelLog>>() {});
+    	        // Directly deserialize the JSON from the byte array, assuming plain JSON data.
+    	        //List<channelLog> channelLogsData = new ObjectMapper().readValue(channelLogs, new TypeReference<List<channelLog>>() {});
 
-        for (channelLog channelLog : channelLogsData) {
-            String eventType = switch (channelLog.getEventType()) {
-                case "0", "1", "2" -> "watermark_channel";
-                default -> channelLog.getEventType();
-            };
+    	        for (channelLog channelLog : channelLogsData) {
+    	            String eventType = switch (channelLog.getEventType()) {
+    	                case "0", "1", "2" -> "watermark_channel";
+    	                default -> channelLog.getEventType();
+    	            };
 
-            Long eventTs;
-            try {
-                eventTs = LocalDateTime.parse(channelLog.getDeviceTimestamp(), DATETIME_FORMATTER)
-                        .atZone(ZoneId.of("Asia/Kolkata")).toInstant().toEpochMilli();
-            } catch (Exception e) {
-                eventTs = Instant.now().toEpochMilli();
-            }
+    	            Long eventTs;
+    	            try {
+    	                eventTs = LocalDateTime.parse(channelLog.getDeviceTimestamp(), DATETIME_FORMATTER)
+    	                        .atZone(ZoneId.of("Asia/Kolkata")).toInstant().toEpochMilli();
+    	            } catch (Exception e) {
+    	                eventTs = Instant.now().toEpochMilli();
+    	            }
 
-            Map<String, Object> event = setEventData(channelLog, batteryPercentage, networkPercentage, eventType);
-            RawMeterEvent rawMeterEvent = kafkaProducerService.publishMeterRawEvent(meterId, channelLog.getEventId(), eventTs, eventType, event, "HTTPS");
+    	            Map<String, Object> event = setEventData(channelLog, batteryPercentage, networkPercentage, eventType);
+    	            RawMeterEvent rawMeterEvent = kafkaProducerService.publishMeterRawEvent(meterId, channelLog.getEventId(), eventTs, eventType, event, "HTTPS");
 
-            if (rawMeterEvent != null) {
-                Map<String, Long> map = new HashMap<>();
-                map.put("eventId", channelLog.getEventId());
-                map.put("id", meterId);
-                channelLogList.add(map);
-            }
-        }
+    	            if (rawMeterEvent != null) {
+    	                Map<String, Long> map = new HashMap<>();
+    	                map.put("eventId", channelLog.getEventId());
+    	                map.put("id", meterId);
+    	                channelLogList.add(map);
+    	            }
+    	        }
 
-        return channelLogList;
+    	        return channelLogList;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+       return null;
     }
  
 
