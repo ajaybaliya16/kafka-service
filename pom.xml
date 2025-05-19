@@ -8,11 +8,11 @@
 		<version>3.4.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.test-core</groupId>
-	<artifactId>test-core</artifactId>
+	<groupId>com.kafka-service</groupId>
+	<artifactId>kafka-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>test-core</name>
-	<description>test-core</description>
+	<name>kafka-service</name>
+	<description>kafka-service</description>
 	<url/>
 	<licenses>
 		<license/>
