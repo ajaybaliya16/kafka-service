@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test_core.thingsboard.common.RawMeterEvent;
+import com.test_core.thingsboard.common.channelLog;
 
 import lombok.RequiredArgsConstructor;
-import com.test_core.thingsboard.common.*;
 
 @Service
 @RequiredArgsConstructor
@@ -39,11 +39,20 @@ public class TbRawMeterEventServiceImpl implements TbRawMeterEventService {
     	        // Directly deserialize the JSON from the byte array, assuming plain JSON data.
     	        //List<channelLog> channelLogsData = new ObjectMapper().readValue(channelLogs, new TypeReference<List<channelLog>>() {});
 
-    	        for (channelLog channelLog : channelLogsData) {
-    	            String eventType = switch (channelLog.getEventType()) {
-    	                case "0", "1", "2" -> "watermark_channel";
-    	                default -> channelLog.getEventType();
-    	            };
+    	         for (channelLog channelLog : channelLogsData) {
+    	        	    String eventType;
+    	        	    switch (channelLog.getEventType()) {
+    	        	        case "0":
+    	        	        case "1":
+    	        	        case "2":
+    	        	            eventType = "watermark_channel";
+    	        	            break;
+    	        	        default:
+    	        	            eventType = channelLog.getEventType();
+    	        	            break;
+    	        	    }
+    	        	   
+    	        	
 
     	            Long eventTs;
     	            try {
