@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import com.test_core.thingsboard.Tables.MeterOTAData;
 import lombok.AllArgsConstructor;
 
@@ -60,15 +62,15 @@ public class MeterOTADataEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = ModelConstants.ID_PROPERTY)
     private Long id;
-    //    @Type(type = "jsonb", value = null)
+      @Type(type = "jsonb")
     @Column(name = METERS, columnDefinition = "jsonb")
     private List<Long> meters;
     @Column(name = STATUS_ID)
     private Long statusId;
-    //    @Type(type = "jsonb", value = null)
+    @Type(type = "jsonb")
     @Column(name = PUSH_SUCCESS, columnDefinition = "jsonb")
     private List<Long> pushSuccess;
-    //    @Type(type = "jsonb", value = null)
+    @Type(type = "jsonb")
     @Column(name = PUSH_ERRORED, columnDefinition = "jsonb")
     private List<Long> pushErrored;
     @Column(name = PUSHED_BY)

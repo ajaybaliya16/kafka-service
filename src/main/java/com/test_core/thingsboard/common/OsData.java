@@ -3,7 +3,8 @@ package com.test_core.thingsboard.common;
 
 import java.util.List;
 
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

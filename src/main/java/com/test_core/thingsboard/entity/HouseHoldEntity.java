@@ -1,5 +1,26 @@
 package com.test_core.thingsboard.entity;
 
+import static com.test_core.thingsboard.entity.ModelConstants.CREATED_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.HHID;
+import static com.test_core.thingsboard.entity.ModelConstants.IS_ACTIVE_MEMBER;
+import static com.test_core.thingsboard.entity.ModelConstants.IS_ACTIVE_TV;
+import static com.test_core.thingsboard.entity.ModelConstants.MEMBER_COUNT;
+import static com.test_core.thingsboard.entity.ModelConstants.MEMBER_ID_VALID_FROM_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.MEMBER_ID_VALID_TO_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.MEMBER_NAMES;
+import static com.test_core.thingsboard.entity.ModelConstants.PROFILE_ID;
+import static com.test_core.thingsboard.entity.ModelConstants.PROFILE_ID_VALID_FROM_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.PROFILE_ID_VALID_TO_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.STATUS_ID;
+import static com.test_core.thingsboard.entity.ModelConstants.STATUS_ID_VALID_FROM_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.STATUS_ID_VALID_TO_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.TV_COUNT;
+import static com.test_core.thingsboard.entity.ModelConstants.TV_IDS;
+import static com.test_core.thingsboard.entity.ModelConstants.UPDATED_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.VALID_FROM_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.VALID_TO_TIME_PROPERTY;
+import static com.test_core.thingsboard.entity.ModelConstants.W_ID;
+
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -13,16 +34,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.TypeDef;
+
+import org.hibernate.annotations.Type;
 import com.test_core.thingsboard.Tables.HouseHold;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 import lombok.Data;
 
-import static com.test_core.thingsboard.entity.ModelConstants.*;
-
 @Data
-//@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @Entity
-@Table(schema = "BARC", name = "HOUSEHOLD")
+@Table(schema = "barc", name = "household")
 public class HouseHoldEntity {
 
 
@@ -38,12 +61,12 @@ public class HouseHoldEntity {
         private Long id;
         @Column(name = HHID)
         private Long hhid;
-        //	@Type(type = "jsonb")
+        @Type(type = "jsonb")
         @Column(name = TV_IDS, columnDefinition = "jsonb")
         private List<String> tvIds;
         @Column(name = W_ID)
         private Long wId;
-        //	@Type(type = "jsonb")
+       	@Type(type = "jsonb")
         @Column(name = MEMBER_NAMES, columnDefinition = "jsonb")
         private List<String> memberNames;
         @Column(name = STATUS_ID)
@@ -58,10 +81,10 @@ public class HouseHoldEntity {
         private Timestamp validFrom;
         @Column(name = VALID_TO_TIME_PROPERTY)
         private Timestamp validTo;
-        //	@Type(type = "jsonb")
+       @Type(type = "jsonb")
         @Column(name = IS_ACTIVE_MEMBER, columnDefinition = "jsonb")
         private List<String> isActiveMember;
-        //	@Type(type = "jsonb")
+       	@Type(type = "jsonb")
         @Column(name = IS_ACTIVE_TV, columnDefinition = "jsonb")
         private List<String> isActiveTV;
         private String updatedBy;

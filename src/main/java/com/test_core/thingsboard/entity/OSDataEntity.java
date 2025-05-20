@@ -31,10 +31,10 @@ public class OSDataEntity {//implements ToData<OsData> {
     private String osType;
     @Column(name = HARDWARE_VERSION)
     private String hardwareVersion;
-//    @Type(type = "jsonb")
+  @Type(type = "jsonb")
     @Column(name = CONFLICTED_COMPONENTS, columnDefinition = "jsonb")
     private List<String> conflictedComponents;
-//    @Type(type = "jsonb")
+    @Type(type = "jsonb")
     @Column(name = MANDATORY_PARAMS, columnDefinition = "jsonb")
     private List<String> mandatoryParams;
 
